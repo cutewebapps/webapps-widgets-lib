@@ -13,4 +13,16 @@ class Widget_ContextCtrl extends App_DbTableCtrl
     {
         return 'Widget_Context';
     }
+    
+    public function getAction()
+    {
+        if ( ! $this->_hasParam( 'context_id') && 
+               $this->_hasParam( 'context_name') ) {
+            
+            $this->view->object = Widget_Context::Table()->fetchByName( $this->_getParam('context_name') );
+        } else {
+        
+            parent::getAction();
+        }
+    }
 }

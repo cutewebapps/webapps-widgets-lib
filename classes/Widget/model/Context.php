@@ -128,4 +128,53 @@ class Widget_Context extends DBx_Table_Row
     {
         return $this->context_name;
     }
+    /**
+     * 
+     * @param App_View $view
+     * @param integer $nRootId
+     * @param boolean $bPreview
+     * @return string
+     */
+    protected function _renderWidgets( App_View $view = null, $nRootId = 0, $bPreview = false )
+    {
+        // get list of widget instance for this context and render it.
+        $lstWidgets = Widget_Instance::Table()->findByParentId( $this->getName(), $nRootId );
+        $strOut = '';
+        
+        /* @var $objWidgetInstance Gateway_PaymentForm_Widget_Instance */
+        //Sys_Debug::dump( $strOut );
+        foreach ( $lstWidgets as $objWidgetInstance ) {
+            $strOut .= $objWidgetInstance->render( $view, $bPreview );
+        }
+        
+        if ( $bPreview && $strOut != '' ) 
+            $strOut = '<div class="child-sortable">'
+                    . $strOut
+                    . '</div><div style="clearfix"></div>';
+        return $strOut;
+    }
+    
+    /**
+     * 
+     * @param boolean $bPreview
+     * @return string
+     */
+    public function render( App_View $view, $bPreview = false )
+    {
+        $view->context = $this->getName();
+        return $this->_renderWidgets( $view, 0, $bPreview );
+    }
+    /**
+     * 
+     * @return Widget_Type_List
+     */
+    public function getAvailableLayouts()
+    {
+        $select = Widget_Type::Table()->select()
+                ->where( 'wdg_category = ?', 'Layout' )
+                ->order( 'wdg_name' );
+        
+        $lstWidgetTypes = Widget_Type::Table()->fetchAll( $select );
+        return $lstWidgetTypes;
+    }
 }
