@@ -94,7 +94,7 @@ abstract class Widget_Abstract
         $strInside = implode( "\n", $this->_arrChildren[ $strKey ] );
         if ( $bPreview ) {
             return '<div class="element-layout" data-id="'.$this->get('wiid').'" data-placeholder="'.$strKey.'" '
-                .'onclick="tpg.winstance.edit(this,'.$this->get('wiid').'); return false;">'
+                .'onclick="winstance.edit(this,'.$this->get('wiid').'); return false;">'
                 . $strInside . '</div>';
         } else {
             if ( $strInside == "" ) $strInside = ' &nbsp; ';
@@ -179,7 +179,7 @@ abstract class Widget_Abstract
         
         foreach( $this->getOptions() as $arrOption ) {
             $objCtrl = new Widget_Control( $arrOption );
-            $strOut .= $objCtrl->render( $view, $objPaymentForm, $objWidgetInstance );
+            $strOut .= $objCtrl->render( $view, $objWidgetInstance );
         }
         return $strOut;
     }
@@ -193,7 +193,7 @@ abstract class Widget_Abstract
     {
         if ( $this->get('wiid') ) {
             return '<div class="element-constructor" rel="'.$this->get('wiid').'" '
-                .'onclick="backend.winstance.edit(this,'.$this->get('wiid').'); return false;">'
+                .'onclick="winstance.edit(this,'.$this->get('wiid').'); return false;">'
                 . $strText . '</div>';
         }
         return '<div class="element-constructor">' . $strText . '</div>';
