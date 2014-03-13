@@ -66,6 +66,7 @@ class Widget_Update extends App_Update {
             $this->getDbAdapterWrite()->addTableSql('widget_context', '
                 context_id        INT NOT NULL AUTO_INCREMENT,
                 context_name      VARCHAR(255)  NOT NULL DEFAULT \'main\',
+                context_css       MEDIUMTEXT,
                 KEY k_context_name( context_name )
             ', 'context_id' );
         }

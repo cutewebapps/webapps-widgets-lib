@@ -81,7 +81,7 @@ class Widget_Context_Form_Edit extends App_Form_Edit
      */
     public function createElements()
     {
-        $this->allowEditing(array( 'context_name' ) );
+        $this->allowEditing(array( 'context_name', 'context_css' ) );
     }
 }
 
@@ -127,6 +127,14 @@ class Widget_Context extends DBx_Table_Row
     public function getName() 
     {
         return $this->context_name;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getCss() 
+    {
+        return $this->context_css;
     }
     /**
      * 

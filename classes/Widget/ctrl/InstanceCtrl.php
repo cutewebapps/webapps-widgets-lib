@@ -14,6 +14,10 @@ class Widget_InstanceCtrl extends App_DbTableCtrl
         return 'Widget_Instance';
     }
     
+    public function uploadAction()
+    {
+        // TODO: image uploader to CDN folder
+    }
     
     protected function getSortableField()
     {
@@ -64,6 +68,8 @@ class Widget_InstanceCtrl extends App_DbTableCtrl
         $nParentId = $this->_getParam('wi_parent_id');
         $arrOptions = array( 'class' => $objWidget->wdg_class );
         
+        $this->_model = Widget_Instance::Table();
+
         $objWi = $this->_model->createRow();
         $objWi->wi_tpl_id = $this->_getParam('wi_tpl_id');
         $objWi->wi_context = $this->_getParam('wi_context');
