@@ -10,12 +10,61 @@ class Widget_Instance_Table extends DBx_Table
  * database table name
  * @var string
  */
-    protected $_name='';
+    protected $_name='widget_instance';
 /**
  * database table primary key
  * @var string
  */
-    protected $_primary='';
+    protected $_primary='wi_id';
+    /**
+     * 
+     * @param int $strContext
+     * @param int $nParentId
+     * @return Widget_Instance_List
+     */
+    public function findByParentId( $strContext, $nParentId, $strPlaceholder = '' )
+    {
+        $select = Widget_Instance::Table()->select()
+                ->setIntegrityCheck( false )
+                ->from( $this )
+                ->join( Widget_Type::TableName(), 'wi_widget_id = wdg_id ')
+                ->where( 'wi_parent_id = ?', $nParentId )
+                ->order( 'wi_sortorder');
+        if ( $strPlaceholder != '')
+            $select->where( 'wi_placeholder = ?', $strPlaceholder );
+        if ( $strContext != '' )
+            $select->where( 'wi_context = ?', $strContext );
+        return $this->fetchAll( $select );
+    }
+    /**
+     * 
+     * @param int $strContext
+     * @param int $nWidgetId
+     * @return Widget_Instance 
+     */
+    public function fetchByWidgetId( $strContext, $nWidgetId )
+    {
+        $select = Widget_Instance::Table()->select()
+                ->setIntegrityCheck( false )
+                ->from( $this )
+                ->join( Widget_Type::TableName(), 'wi_widget_id = wdg_id ')
+                ->where( 'wi_widget_id = ?', $nWidgetId );
+        if ( $strContext != '' )
+            $select->where( 'wi_context = ? ', $strContext );
+        //Sys_Debug::alert($strContext . '------' . $nWidgetId );
+        return $this->fetchRow( $select );
+    }
+    /* 
+     * @return Widget_Instance_List
+     */
+    public function findInContext( $strContext )
+    {
+        $select = $this->select()
+                ->setIntegrityCheck( false )
+                ->from( $this )
+                ->where( 'wi_context = ?', $strContext );
+        return $this->fetchAll( $select );
+    }
 }
 /**
  * class of the rowset
@@ -90,5 +139,84 @@ class Widget_Instance extends DBx_Table_Row
       */
     public static function Form( $name ) { $strClass = self::getClassName().'_Form_'.$name; return new $strClass; }
     
+    /**
+     * 
+     * @return array
+     */
+    public function getPropertiesArray()
+    {
+        $arrProperties = $this->wi_properties == '' ? array() : json_decode( $this->wi_properties, true );
+        return $arrProperties;
+    }
+    
+    /**
+     * 
+     * @return Widget_Type
+     */
+    public function getWidgetObject()
+    {
+        return $this->getJoinedObject( Widget_Type::Table(), 'wdg_id', 'wi_widget_id' );
+    }
+    
+    
+    /**
+     * 
+     * @param App_View $view
+     * @param boolean $bPreview
+     * @return string
+     * @throws App_Exception
+     */
+    public function render( App_View $view, $bPreview = false )
+    {
+        $objWidget = $this->getWidgetObject();
+        $strClass = $objWidget->wdg_class;
+        if ( $strClass ) {
+            
+            
+            $objInstanceFromClass = new $strClass( 
+                    array( 'wiid' => $this->getId() ) + json_decode( $this->wi_properties, true ) );
+            
+            // Sys_Debug::dump( $objInstanceFromClass );
+            $bForbid = false;
 
+            if ( !$bForbid ) {
+                foreach ( $objInstanceFromClass->getPlaceholders() as $strPlaceholder ) {
+                    
+                    $strChildHtml = '';
+                    if ( $bPreview ) $strChildHtml .= '<div class="child-sortable">';
+
+                    $lstChildWidgets = Widget_Instance::Table()
+                                ->findByParentId( '', $this->getId(), $strPlaceholder );
+                    foreach( $lstChildWidgets as $objChildWidget ) {
+                        $strChildHtml .= $objChildWidget->render( $view, $bPreview );
+                    }
+                    if ( $bPreview ) $strChildHtml .= '<div style="height:10px"></div>';
+                    if ( $bPreview ) $strChildHtml .= '</div>';
+
+                    $objInstanceFromClass->addChild( $strPlaceholder, $strChildHtml );
+                }
+
+                //Sys_Debug::dump( $objInstanceFromClass );
+                return $objInstanceFromClass->render( $view, $bPreview  );
+            }
+            return '';
+            
+        } else {
+            throw new App_Exception( 'no class for a widget' );
+        }
+    }
+    
 }
+
+
+/**
+    wi_id           INT NOT NULL AUTO_INCREMENT,
+    wi_form_id      INT NOT NULL DEFAULT 0,
+    wi_context      VARCHAR(40)  NOT NULL DEFAULT \'global\',
+                
+    wi_widget_id    INT NOT NULL DEFAULT 0, -- widget class id
+    wi_placebolder  VARCHAR(50)  NOT NULL DEFAULT \'\',
+    wi_parent_id    INT NOT NULL DEFAULT 0, -- which widget is a parent (wi_id)
+    wi_sortorder    INT NOT NULL DEFAULT 0, -- order of a widget inside a parent folder
+    wi_properties   TEXT, -- customization values for this widget instance
+ */

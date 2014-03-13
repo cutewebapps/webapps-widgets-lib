@@ -10,12 +10,43 @@ class Widget_Context_Table extends DBx_Table
  * database table name
  * @var string
  */
-    protected $_name='';
+    protected $_name='widget_context';
 /**
  * database table primary key
  * @var string
  */
-    protected $_primary='';
+    protected $_primary='context_id';
+    
+    /**
+     * @param string $strName
+     * @return Widget_Context
+     */
+    public function fetchByName( $strName )
+    {
+        $select = $this->select()->where( 'context_name = ?', $strName );
+        return $this->fetchRow( $select );
+    }    
+    
+     /**
+     * Scan classes and add the records about them into the database
+     * @return void
+     */
+    public function addFromConfig()
+    {
+        $configWidgetCategories  = App_Application::getInstance()->getConfig()->widgets;
+        if  ( !is_object( $configWidgetCategories ))
+            throw new App_Exception( 'Widgets are not configured' );
+        
+        foreach ( $configWidgetCategories->contexts as $strContext ) {
+            $objContext = $this->fetchByName( $strContext );
+            if ( !is_object( $objContext )) {
+                Sys_Io::out( "Creating context for widgets ".$strContext );
+                $objContext = $this->createRow();
+                $objContext->context_name = $strContext;
+                $objContext->save( false );
+            }
+        }
+    }
 }
 /**
  * class of the rowset
@@ -35,7 +66,7 @@ class Widget_Context_Form_Filter extends App_Form_Filter
      */
     public function createElements()
     {
-        $this->allowFiltering( array( ) );
+        $this->allowFiltering( array( 'context_name'  ) );
     }
 }
 
@@ -50,7 +81,7 @@ class Widget_Context_Form_Edit extends App_Form_Edit
      */
     public function createElements()
     {
-        $this->allowEditing(array(  ) );
+        $this->allowEditing(array( 'context_name' ) );
     }
 }
 
@@ -90,5 +121,11 @@ class Widget_Context extends DBx_Table_Row
       */
     public static function Form( $name ) { $strClass = self::getClassName().'_Form_'.$name; return new $strClass; }
     
-
+    /**
+     * @return string
+     */
+    public function getName() 
+    {
+        return $this->context_name;
+    }
 }
