@@ -1,0 +1,8 @@
+{
+    "name"    : "webapps-widgets-lib",
+    "version" : "0.1.6",
+    "classes" : [ "Widgets" ],
+    "deps"    : [ 
+        "webapps-framework-lib"
+    ]
+}
