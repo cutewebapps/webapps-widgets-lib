@@ -93,7 +93,7 @@ class Widget_Static_Text extends Widget_Tag
         // if ( $this->get( 'text-align') )
         $this->arrStyles['text-align'] = $this->get( 'text-align', 'center');
         
-        if ( $this->get( 'font-size', '12') ) {
+        if ( $this->get( 'font-size') ) {
             $this->arrStyles['font-size'] = $this->get( 'font-size').'px';
             $this->arrStyles['line-height'] = ($this->get( 'font-size') + 4 ).'px';
         }
