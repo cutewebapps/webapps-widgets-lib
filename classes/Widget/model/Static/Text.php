@@ -51,7 +51,7 @@ class Widget_Static_Text extends Widget_Tag
             ,
             array( 'name' => 'font-size', 
                    'type' => 'dropdown', 
-                   'value' => '24', 
+                   'value' => '12', 
                    'width' => '80px',
                    'options' => array( '8' => '8', '9' => '9', '10' => '10', '11' => '11', 
                        '12' => '12', '13' => '13', '14' => '14', '16' => '16', '18' => '18', 
@@ -93,7 +93,7 @@ class Widget_Static_Text extends Widget_Tag
         // if ( $this->get( 'text-align') )
         $this->arrStyles['text-align'] = $this->get( 'text-align', 'center');
         
-        if ( $this->get( 'font-size') ) {
+        if ( $this->get( 'font-size', '12') ) {
             $this->arrStyles['font-size'] = $this->get( 'font-size').'px';
             $this->arrStyles['line-height'] = ($this->get( 'font-size') + 4 ).'px';
         }
