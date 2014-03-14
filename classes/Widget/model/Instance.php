@@ -151,6 +151,18 @@ class Widget_Instance extends DBx_Table_Row
     
     /**
      * 
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    public function get( $key, $default = '' )
+    {
+        $arrProps = $this->getPropertiesArray();
+        return isset( $arrProps[ $key ] ) ? $arrProps[ $key ] : $default;
+    }
+    
+    /**
+     * 
      * @return Widget_Type
      */
     public function getWidgetObject()

@@ -71,7 +71,7 @@ class Widget_Static_Header extends Widget_Abstract
         
         // Sys_Debug::dump( $this->_arrProperties );
         
-        $strElem = '<div class="legend bold '.$this->get('cssclass').'" style="margin-bottom:5px'.$strEx.'">'.$this->get('title', 'Default Text').'</div>';
+        $strElem = '<div class="legend bold '.$this->get('cssclass').'" style="margin-bottom:5px;'.$strEx.'">'.$this->get('title', 'Default Text').'</div>';
         if ( $bPreview ) return $this->getConstructorHtml( $strElem );
         return $strElem;
     }

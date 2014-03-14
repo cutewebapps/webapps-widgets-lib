@@ -26,9 +26,7 @@ class Widget_InstanceCtrl extends App_DbTableCtrl
       
     public function sortOrderAction()
     {
-        $this->_initForm();
         $strSortableField = $this->getSortableField();
-        
         $strIds = $this->_getParam('ids');
         if ( $strIds == '' ) $strIds = $this->_getParam('order'); // old compatibility...
             
@@ -36,6 +34,7 @@ class Widget_InstanceCtrl extends App_DbTableCtrl
         if ( count( $arrIds ) == 0 )
             throw new App_Exception( "ids are not provided" );
         
+        $this->_model = Widget_Instance::Table();
         $nIterator = 0;
         foreach ( $arrIds as $nId )  {
             $objRow = $this->_model->find( $nId )->current();
@@ -44,7 +43,6 @@ class Widget_InstanceCtrl extends App_DbTableCtrl
                 $objRow->save( false );
             }
         }
-        if ( $nIterator > 0 ) $this->view->form->wasUpdated();
     }
 
     public function getAction()

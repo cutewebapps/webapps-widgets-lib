@@ -75,8 +75,14 @@ class Widget_Control
                 
             
             case 'image':
-               // Sys_Debug::dump( $arrDefaults );
-                return;
+                $ctrl = new Widget_Static_Image( array(
+                    'id' => 'wi-'. $this->getName(),
+                    'label' => $this->getCaption(),
+                    'width' => '100%',
+                    'value' => isset( $arrDefaults[ $this->getName() ] ) ?
+                                    $arrDefaults[ $this->getName() ] : $this->getDefault()
+                ) + $this->arrParams );
+                return  $ctrl->render( $view, false );
             
             case 'text':
                 //Sys_Debug::dump ( $this->arrParams );

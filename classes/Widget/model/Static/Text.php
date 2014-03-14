@@ -23,10 +23,7 @@ class Widget_Static_Text extends Widget_Tag
      */
     public function getTemplates()
     {
-        $select  = $this->_objForm->getModuleTable()->select()
-                    ->where( 'mo_type = ?', 'resource' )
-                    ->where( 'mo_name LIKE \'%\.html\' ');
-        return $this->_objForm->getModuleTable()->fetchAll( $select )->getAsArray( 'mo_name', 'mo_name' );
+        return array();
     }
     
     /**
@@ -36,14 +33,7 @@ class Widget_Static_Text extends Widget_Tag
      */
     public function getTemplateContent( $strName )
     {
-        $select  = $this->_objForm->getModuleTable()->select()
-                    ->where( 'mo_type = ?', 'resource' )
-                    ->where( 'mo_name = ?', $strName );
-        $objRow = $this->_objForm->getModuleTable()->fetchRow( $select );
-        if ( is_object( $objRow )) 
-            return $objRow->mo_content;
-        
-        return '';
+       return '';
     }
     /**
      * 
@@ -75,12 +65,12 @@ class Widget_Static_Text extends Widget_Tag
                    'value' => 'Static Text', 
                    'caption' => 'Content' )
             ,
-            array( 'name' => 'tpl', 
-                   'type' => 'dropdown', 
-                   'value' => '', 
-                   'options' => array( '' => 'No Template' ) + $this->getTemplates(),
-                   'caption' => 'Template' )
-            ,
+//            array( 'name' => 'tpl', 
+//                   'type' => 'dropdown', 
+//                   'value' => '', 
+//                   'options' => array( '' => 'No Template' ) + $this->getTemplates(),
+//                   'caption' => 'Template' )
+//            ,
             array( 'name' => 'cssclass',
                    'type' => 'text', 
                    'value' => '', 

@@ -155,10 +155,11 @@ class Widget_Context extends DBx_Table_Row
             $strOut .= $objWidgetInstance->render( $view, $bPreview );
         }
         
-        if ( $bPreview && $strOut != '' ) 
-            $strOut = '<div class="child-sortable">'
-                    . $strOut
-                    . '</div><div style="clearfix"></div>';
+        if ( $bPreview && $strOut != '' ) {
+            $strOut = '<div class="canvas backend-form"><div class="child-sortable">'."\n"
+                    . $strOut."\n"
+                    . '</div><div style="clearfix"></div></div>'."\n";
+        }
         return $strOut;
     }
     

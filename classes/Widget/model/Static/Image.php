@@ -15,12 +15,30 @@ class Widget_Static_Image extends Widget_Abstract
     public function getContext()
     {
         return '';
-    }    
-    public function getResources()
+    }   
+    
+    public function getCdnFolder()
     {
-        return array();
+        return CWA_APPLICATION_DIR.'/cdn/upload';
     }
-
+    
+    public function getCdnPath()
+    {
+        return '/cdn/upload';
+    }
+    
+    public function getExistingFiles()
+    {
+        $dir = new Sys_Dir( $this->getCdnFolder() );
+        
+        $arrResources = array();
+        foreach ( $dir->getFiles( "@(png|jpeg|jpg|gif)@" ) as $strFile ) {
+            $strValue = str_replace( CWA_APPLICATION_DIR, '', $strFile );
+            $strFile = str_replace( $this->getCdnFolder(), '', $strFile );
+            $arrResources[ $strValue ] = $strFile;
+        }
+        return $arrResources;
+    }
     
     public function getOptions()
     {
@@ -29,26 +47,28 @@ class Widget_Static_Image extends Widget_Abstract
                    'type' => 'dropdown', 
                    'value' => 'center', 
                    'options' => array( 'left' => 'left','center' => 'center','right' => 'right' ),
-                   'caption' => 'Text Align' )
+                   'caption' => Lang_Hash::get('Text Align'),
+                   'onkeyup'  => 'winstance.image.external()',
+                   'onchange' => 'winstance.image.external()',
+            )
             ,
             array( 'name' => 'src', 
                    'type' => 'text', 
                    'value' => '', 
-                   'caption' => 'Type Image URLs' )
-            ,
-            array( 'name' => 'upload', 
-                   'type' => 'upload', 
-                   'value' => '', 
-                   'caption' => 'Upload From Local' )
+                   'caption' => Lang_Hash::get('Type Image URLs') )
             ,
             array( 'name' => 'resource', 
                    'type' => 'dropdown', 
                    'value' => '', 
-                   'options' => array( '' => 'No Resource' ) + $this->getResources(),
-                   'caption' => 'Select From Resources' )
+                   'options' => array( '' => '- '.Lang_Hash::get('Please Select').' -' ) + $this->getExistingFiles(),
+                   'caption' => Lang_Hash::get('Selected Image'),
+                   'onchange' => 'winstance.image.selected( this )' )
+            ,
+            array( 'name' => 'image-css', 'type' => 'css', 'value' => '', 
+                    'caption' => Lang_Hash::get('Image CSS') )
             ,
             array( 'name' => 'css', 'type' => 'css', 'value' => '', 
-                    'caption' => 'Additional CSS' )
+                    'caption' => Lang_Hash::get('Additional CSS') )
         );
     }      
     
@@ -63,8 +83,27 @@ class Widget_Static_Image extends Widget_Abstract
         $strWrapStart = '<div style="text-align:'.$this->get('text-align','center').';'.$this->get('css').'">';
         $strWrapEnd = '</div>';
         
-        $strElem = $strWrapStart.'<img src="'.$this->get('src').'" alt="" />'.$strWrapEnd;
+        $strElem = $strWrapStart . '<img id="src-'.$this->get('wiid').'" '
+                        .' rel="'.$this->get('wiid').'" '
+                        .' style="'.$this->get('image-css').'" '
+                        .' src="'.$this->get('src').'" alt="'.$this->get('alt').'" />'.$strWrapEnd;
+        
         if ( $bPreview ) return $this->getConstructorHtml( $strElem );
         return $strWrapStart.$strElem.$strWrapEnd;
+    }
+    
+    public function renderBackend( App_View $view, Widget_Instance $objWidgetInstance )
+    {
+        $strOut = parent::renderBackend( $view, $objWidgetInstance );
+        
+        $sHide = '';
+        if ( $objWidgetInstance->get('src') == '' ) $sHide = " style='display:none' ";
+        // Sys_Debug::dump( $objWidgetInstance->getPropertiesArray() );
+        
+        $strOut .= "\n\n<div class='control-group  wi-preview'>"
+                        . "<label class='control-label'>".Lang_Hash::get('Image Preview').":</label><div class='controls'>"
+                        . "<img class='preview' src='".$objWidgetInstance->get('src')."' alt='' $sHide />"
+                        . "</div></div>\n\n";
+        return $strOut;
     }
 }

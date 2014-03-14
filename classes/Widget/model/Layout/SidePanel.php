@@ -36,13 +36,13 @@ class Widget_Layout_SidePanel extends Widget_Abstract
             array( 'name' => 'central-panel-width', 'type' => 'text', 'value' => '80%',
                     'caption' => 'Content Width' )
             ,
-            array( 'name' => 'panel-css', 'type' => 'textarea', 'value' => '', 
+            array( 'name' => 'panel-css', 'type' => 'css', 'value' => '', 
                     'caption' => 'Panel CSS' )
             ,
-            array( 'name' => 'content-css', 'type' => 'textarea', 'value' => '', 
+            array( 'name' => 'content-css', 'type' => 'css', 'value' => '', 
                     'caption' => 'Content CSS' )
             ,
-            array( 'name' => 'outer-css', 'type' => 'textarea', 'value' => '', 
+            array( 'name' => 'outer-css', 'type' => 'css', 'value' => '', 
                     'caption' => 'Outer CSS' )
             
         );
@@ -96,7 +96,11 @@ class Widget_Layout_SidePanel extends Widget_Abstract
         $strOut .= ''
             .'<div class="clearfix" style="clear:both"></div>';
         
-        $strOut = '<div class="element-layout-wrapper" style="'.$this->get('outer-css').'">'.$strOut.'</div>';
+        if ( $this->get('outer-css','') ) {
+            $strOut = '<div style="'.$this->get('outer-css').'">'.$strOut.'</div>';
+        }
+        $strOut = '<div class="element-layout-wrapper">'.$strOut.'</div>';
+        
         return $strOut;
     }    
 }
