@@ -64,6 +64,11 @@ class Widget_Static_Image extends Widget_Abstract
                    'caption' => Lang_Hash::get('Selected Image'),
                    'onchange' => 'winstance.image.selected( this )' )
             ,
+            array( 'name' => 'link', 
+                   'type' => 'text', 
+                   'value' => '', 
+                   'caption' => Lang_Hash::get('Link') )
+            ,
             array( 'name' => 'image-css', 'type' => 'css', 'value' => '', 
                     'caption' => Lang_Hash::get('Image CSS') )
             ,
@@ -83,10 +88,17 @@ class Widget_Static_Image extends Widget_Abstract
         $strWrapStart = '<div style="text-align:'.$this->get('text-align','center').';'.$this->get('css').'">';
         $strWrapEnd = '</div>';
         
-        $strElem = $strWrapStart . '<img id="src-'.$this->get('wiid').'" '
-                        .' rel="'.$this->get('wiid').'" '
-                        .' style="'.$this->get('image-css').'" '
-                        .' src="'.$this->get('src').'" alt="'.$this->get('alt').'" />'.$strWrapEnd;
+        if ( $this->get( 'link' ) == '' ) {
+            $strElem = $strWrapStart . '<img id="src-'.$this->get('wiid').'" '
+                            .' rel="'.$this->get('wiid').'" '
+                            .' style="'.$this->get('image-css').'" '
+                            .' src="'.$this->get('src').'" alt="'.$this->get('alt').'" />'.$strWrapEnd;
+        } if ( $this->get( 'link' ) != '' ) {
+            $strElem = $strWrapStart . '<a href="'. $this->get( 'link' ) .'"><img id="src-'.$this->get('wiid').'" '
+                            .' rel="'.$this->get('wiid').'" '
+                            .' style="'.$this->get('image-css').'" '
+                            .' src="'.$this->get('src').'" alt="'.$this->get('alt').'" /></a>'.$strWrapEnd;
+        }
         
         if ( $bPreview ) return $this->getConstructorHtml( $strElem );
         return $strWrapStart.$strElem.$strWrapEnd;
