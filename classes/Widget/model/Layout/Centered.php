@@ -55,7 +55,7 @@ class Widget_Layout_Centered extends Widget_Abstract
         if ( $this->get('outer-css','') ) {
             $strOut = '<div style="'.$this->get('outer-css').'">'.$strOut.'</div>';
         }
-        $strOut = '<div class="element-layout-wrapper">'.$strOut.'</div>';
+        $strOut = '<div class="element-layout-wrapper" rel="' . $this->get('wiid').'">'.$strOut.'</div>';
         
         return $strOut;
     }
