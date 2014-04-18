@@ -23,7 +23,17 @@ class Widget_Static_Text extends Widget_Tag
      */
     public function getTemplates()
     {
-        return array();
+        $arrTemplates = array();
+        if ( is_object( App_Application::getInstance()->getConfig()->widgets->contexts ) ) {
+            $lstContexts = App_Application::getInstance()->getConfig()->widgets->contexts;
+            foreach ( $lstContexts as $strNameContext => $strSlugContext ) {
+                if ( $strSlugContext == 'header' || $strSlugContext == 'sidebar-right' || $strSlugContext == 'footer' ) {
+                    $arrTemplates[ $strSlugContext ] = $strNameContext;
+                }
+            }
+        }
+        
+        return $arrTemplates;
     }
     
     /**
@@ -31,9 +41,15 @@ class Widget_Static_Text extends Widget_Tag
      * @param string $strName
      * @return string
      */
-    public function getTemplateContent( $strName )
+    public function getTemplateContent( $strName, $bPreview )
     {
-       return '';
+        $strContent = '';
+        $view = new App_View();
+        $objContext = Widget_Context::Table()->fetchByName( $strName );
+        if (is_object($objContext) ) {
+            $strContent = $objContext->render( $view, $bPreview );
+        }
+        return $strContent;
     }
     /**
      * 
@@ -42,9 +58,9 @@ class Widget_Static_Text extends Widget_Tag
     public function getOptions()
     {
         return array(
-            array( 'name' => 'text-align', 
-                   'type' => 'dropdown', 
-                   'value' => 'center', 
+            array( 'name' => 'text-align',
+                   'type' => 'dropdown',
+                   'value' => 'center',
                    'width' => '120px',
                    'options' => array( 'left' => 'Left', 'center' => 'Center', 'right' => 'Right' ),
                    'caption' => 'Text Align' )
@@ -65,12 +81,12 @@ class Widget_Static_Text extends Widget_Tag
                    'value' => 'Static Text', 
                    'caption' => 'Content' )
             ,
-//            array( 'name' => 'tpl', 
-//                   'type' => 'dropdown', 
-//                   'value' => '', 
-//                   'options' => array( '' => 'No Template' ) + $this->getTemplates(),
-//                   'caption' => 'Template' )
-//            ,
+            array( 'name' => 'tpl', 
+                   'type' => 'dropdown', 
+                   'value' => '', 
+                   'options' => array( '' => 'No Template' ) + $this->getTemplates(),
+                   'caption' => 'Template' )
+            ,
             array( 'name' => 'cssclass',
                    'type' => 'text', 
                    'value' => '', 
@@ -102,11 +118,13 @@ class Widget_Static_Text extends Widget_Tag
         
         $strContent = $this->get( 'content', '' );
         if ( $this->get('tpl') != '' ) {
-            $strContent = $this->getTemplateContent( $this->get('tpl') );
+            $strContent = $this->getTemplateContent( $this->get('tpl'), $bPreview );
         }
         
         $strOut = $this->getTagHtml( 'div', ' '.$strContent.'  ', $this->get('css') );
-        if ( $bPreview ) $strOut = $this->getConstructorHtml ( $strOut );
+        if ( $bPreview ) {
+            $strOut = $this->getConstructorHtml ( $strOut );
+        }
         
         return $strOut;
     }
