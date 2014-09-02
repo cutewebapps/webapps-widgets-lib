@@ -105,6 +105,7 @@ class Widget_Input_Text extends Widget_Tag
             //$this->arrAttributes['type'] = 'text';
         }
 
+        $this->arrClasses['form-control'] = 'form-control';
        
         if ( $this->get('readonly'))
             $this->arrAttributes['readonly'] = 'readonly';
@@ -135,18 +136,20 @@ class Widget_Input_Text extends Widget_Tag
      */
     public function render( App_View $view, $bPreview = false )
     {    
-        if ( $bPreview )
+        if ( $bPreview ) {
             $this->arrAttributes['disabled'] = 'disabled';
+        }
         // die( 'preview: '.$bPreview );
         
         $sId = preg_match( '@^\d@', $this->get('id')) ? '' : $this->get('id');
-        $strOut = '<div class="control-group '.$sId.'">'
+        
+        $strOut = '<div class=" '.( $this->isBootstrap2() ? 'control-group' : 'form-group' )." ".$sId.'">'
                     .'<label class="control-label">'.$this->get('label').'</label>'
                     .'<div class="controls">'
                         .$this->getControlHtml()
                     .'</div>'
                 .'</div>';
-        if ( $bPreview ) $strOut = $this->getConstructorHtml ( $strOut );
+        if ( $bPreview ) { $strOut = $this->getConstructorHtml ( $strOut ); }
         return $strOut;
     }
     
@@ -185,18 +188,19 @@ class Widget_Input_Text extends Widget_Tag
         
         $strSqlDefinition = ' VARCHAR(255) NOT NULL DEFAULT \'\' ';
 
-        if ( $strClass == 'Widget_Input_Checkbox' )
+        if ( $strClass == 'Widget_Input_Checkbox' ) {
             $strSqlDefinition = 'INT NOT NULL DEFAULT 0';
-        else if ( $strClass == 'Widget_Input_Number' )
+        } else if ( $strClass == 'Widget_Input_Number' ) {
             $strSqlDefinition = 'INT NOT NULL DEFAULT 0';
-        else if ( $strClass == 'Widget_Input_Money' )
+        } else if ( $strClass == 'Widget_Input_Money' ) {
             $strSqlDefinition = 'DECIMAL(10,2) NOT NULL DEFAULT 0';
-        else if ( $strClass == 'Widget_Input_DateTime' )
+        } else if ( $strClass == 'Widget_Input_DateTime' ) {
             $strSqlDefinition = 'DATETIME NOT NULL DEFAULT \'0000-00-00 00:00:00\'';
-        else if ( $strClass == 'Widget_Input_Date' )
+        } else if ( $strClass == 'Widget_Input_Date' ) {
             $strSqlDefinition = 'DATETIME NOT NULL DEFAULT \'0000-00-00 00:00:00\'';
-        else if ( $strClass == 'Widget_Input_Uploader' )
+        } else if ( $strClass == 'Widget_Input_Uploader' ) {
             $strSqlDefinition = 'VARCHAR(255) NOT NULL DEFAULT \'\'';
+        }
         
         if ( isset(  $this->_arrProperties['rows'] ) &&  $this->_arrProperties['rows'] > 1 ) {
             $strSqlDefinition = 'MEDIUMTEXT';

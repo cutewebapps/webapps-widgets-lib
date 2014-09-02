@@ -34,10 +34,18 @@ class Widget_Context_Table extends DBx_Table
     public function addFromConfig()
     {
         $configWidgetCategories  = App_Application::getInstance()->getConfig()->widgets;
-        if  ( !is_object( $configWidgetCategories ))
+        if  ( ! is_object( $configWidgetCategories ) ) {
             throw new App_Exception( 'Widgets are not configured' );
+        }
         
-        foreach ( $configWidgetCategories->contexts as $strContext ) {
+        if ( is_object( $configWidgetCategories->contexts )) {
+            $this->addFromArray( $configWidgetCategories->contexts );
+        }
+    }
+    
+    public function addFromArray( $arrContexts )
+    {
+        foreach ( $arrContexts as $strContext ) {
             $objContext = $this->fetchByName( $strContext );
             if ( !is_object( $objContext )) {
                 Sys_Io::out( "Creating context for widgets ".$strContext );

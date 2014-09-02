@@ -29,7 +29,7 @@ class Widget_Static_Image extends Widget_Abstract
     
     public function getExistingFiles()
     {
-        $dir = new Sys_Dir( $this->getCdnFolder() );
+        $dir = new Sys_Dir( $this->getCdnFolder(), true );
         
         $arrResources = array();
         foreach ( $dir->getFiles( "@(png|jpeg|jpg|gif)@" ) as $strFile ) {
@@ -42,7 +42,7 @@ class Widget_Static_Image extends Widget_Abstract
     
     public function getOptions()
     {
-        return array(
+        $arrOptions = array(
             array( 'name' => 'text-align', 
                    'type' => 'dropdown', 
                    'value' => 'center', 
@@ -56,25 +56,38 @@ class Widget_Static_Image extends Widget_Abstract
                    'type' => 'text', 
                    'value' => '', 
                    'caption' => Lang_Hash::get('Type Image URLs') )
-            ,
-            array( 'name' => 'resource', 
-                   'type' => 'dropdown', 
-                   'value' => '', 
-                   'options' => array( '' => '- '.Lang_Hash::get('Please Select').' -' ) + $this->getExistingFiles(),
-                   'caption' => Lang_Hash::get('Selected Image'),
-                   'onchange' => 'winstance.image.selected( this )' )
-            ,
-            array( 'name' => 'link', 
-                   'type' => 'text', 
-                   'value' => '', 
-                   'caption' => Lang_Hash::get('Link') )
-            ,
-            array( 'name' => 'image-css', 'type' => 'css', 'value' => '', 
-                    'caption' => Lang_Hash::get('Image CSS') )
-            ,
-            array( 'name' => 'css', 'type' => 'css', 'value' => '', 
-                    'caption' => Lang_Hash::get('Additional CSS') )
         );
+        
+        if ( $this->hasLocalUpload() ) {  
+            $arrOptions[] = array( 'name' => 'uploader', 
+                'type' => 'upload', 
+                'value' => '', 
+                'caption' => Lang_Hash::get('Local Upload'),
+                )
+            ;
+        }
+        
+        if ( $this->hasLocalUpload() && count( $this->getExistingFiles() )) {
+            $arrOptions[] = array( 'name' => 'upload', 
+                'type' => 'dropdown', 
+                'value' => '', 
+                'options' => array( '' => '- '.Lang_Hash::get('Please Select').' -' ) + $this->getExistingFiles(),
+                'caption' => Lang_Hash::get('Existing Image'),
+                'onchange' => 'winstance.image.selected( this )' )
+            ;
+        }
+        
+        $arrOptions[] = array( 'name' => 'link', 
+            'type' => 'text', 
+            'value' => '', 
+            'caption' => Lang_Hash::get('Link') );
+        $arrOptions[] = array( 'name' => 'image-css', 'type' => 'css', 'value' => '', 
+            'caption' => Lang_Hash::get('Image CSS') );
+        
+        $arrOptions[] =  array( 'name' => 'css', 'type' => 'css', 'value' => '', 
+            'caption' => Lang_Hash::get('Additional CSS') );
+        
+        return $arrOptions;
     }      
     
     /**
@@ -100,7 +113,7 @@ class Widget_Static_Image extends Widget_Abstract
                             .' src="'.$this->get('src').'" alt="'.$this->get('alt').'" /></a>'.$strWrapEnd;
         }
         
-        if ( $bPreview ) return $this->getConstructorHtml( $strElem );
+        if ( $bPreview ) { return $this->getConstructorHtml( $strElem ); }
         return $strWrapStart.$strElem.$strWrapEnd;
     }
     
@@ -109,12 +122,12 @@ class Widget_Static_Image extends Widget_Abstract
         $strOut = parent::renderBackend( $view, $objWidgetInstance );
         
         $sHide = '';
-        if ( $objWidgetInstance->get('src') == '' ) $sHide = " style='display:none' ";
+        if ( $objWidgetInstance->get('src') == '' ) { $sHide = " style='display:none' "; }
         // Sys_Debug::dump( $objWidgetInstance->getPropertiesArray() );
         
-        $strOut .= "\n\n<div class='control-group  wi-preview'>"
+        $strOut .= "\n\n<div class='".( $this->isBootstrap2() ? 'control-group' : 'form-group' )." wi-preview'>"
                         . "<label class='control-label'>".Lang_Hash::get('Image Preview').":</label><div class='controls'>"
-                        . "<img class='preview' src='".$objWidgetInstance->get('src')."' alt='' $sHide />"
+                        . "<img class='preview' style='max-width:350px;max-height:300px;' src='".$objWidgetInstance->get('src')."' alt='' $sHide />"
                         . "</div></div>\n\n";
         return $strOut;
     }

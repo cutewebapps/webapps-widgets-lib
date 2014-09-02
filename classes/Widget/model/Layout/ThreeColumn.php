@@ -74,17 +74,17 @@ class Widget_Layout_ThreeColumn extends Widget_Abstract
             $strWidthR = 'width: '.$this->get( 'column-right-width' ).';';
         
         $strOut =
-             '<div class="form-horizontal" style="float:left;'.$strWidthL.$strCssL.'">'
+             '<div class="'.$this->getHorizontalForm().'" style="float:left;'.$strWidthL.$strCssL.'">'
                 .'<div style="'.$strEx.'">'
                     . $this->getChild( 'column-left', $bPreview )
                 . '</div>'
             .'</div>'
-            .'<div class="form-horizontal" style="float:left;'.$strWidthC.$strCssC.'">'
+            .'<div class="'.$this->getHorizontalForm().'" style="float:left;'.$strWidthC.$strCssC.'">'
                 .'<div style="'.$strEx.'">'
                     . $this->getChild( 'column-central', $bPreview )
                 .'</div>'
             . '</div>'
-            .'<div class="form-horizontal" style="float:left;'.$strWidthR.$strCssR.'">'
+            .'<div class="'.$this->getHorizontalForm().'" style="float:left;'.$strWidthR.$strCssR.'">'
                 .'<div style="'.$strEx.'">'
                     . $this->getChild( 'column-right', $bPreview )
                 .'</div>'

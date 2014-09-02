@@ -16,7 +16,21 @@ class Widget_InstanceCtrl extends App_DbTableCtrl
     
     public function uploadAction()
     {
-        // TODO: image uploader to CDN folder
+        // image uploader to CDN folder
+        $dirTo = CWA_APPLICATION_DIR.'/cdn/upload';
+        $dir = new Sys_Dir( $dirTo);
+        if ( !$dir->exists() ) { $dir->create('', true); }
+
+        $handler = new Widget_Upload_Handler();
+        $arrResult = $handler->handleUpload( $dirTo.'/', true ); // slash at the end is important
+        $strFileName = $handler->getUploadName();
+        
+        if ( isset( $arrResult['error'] )) {
+            $this->view->result = array('success'  => false, 'error'  => $arrResult['error'] );
+        } else { 
+            $this->view->result = array( 'success'  => true);
+        }
+
     }
     
     protected function getSortableField()

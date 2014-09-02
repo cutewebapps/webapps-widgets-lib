@@ -57,7 +57,7 @@ class Widget_Static_Text extends Widget_Tag
      */
     public function getOptions()
     {
-        return array(
+        $arrData = array(
             array( 'name' => 'text-align',
                    'type' => 'dropdown',
                    'value' => 'center',
@@ -81,12 +81,6 @@ class Widget_Static_Text extends Widget_Tag
                    'value' => 'Static Text', 
                    'caption' => 'Content' )
             ,
-            array( 'name' => 'tpl', 
-                   'type' => 'dropdown', 
-                   'value' => '', 
-                   'options' => array( '' => 'No Template' ) + $this->getTemplates(),
-                   'caption' => 'Template' )
-            ,
             array( 'name' => 'cssclass',
                    'type' => 'text', 
                    'value' => '', 
@@ -95,6 +89,16 @@ class Widget_Static_Text extends Widget_Tag
             array( 'name' => 'css', 'type' => 'css', 'value' => '', 
                     'caption' => 'Additional CSS' )
         );
+        
+        $arrTemplates = $this->getTemplates();
+        if ( count( $arrTemplates ) ) {
+            $arrData[] = array( 'name' => 'tpl', 
+                   'type' => 'dropdown', 
+                   'value' => '', 
+                   'options' => array( '' => 'No Template' ) + $arrTemplates,
+                   'caption' => 'Template' );
+        }
+        return $arrData;
     }  
     /**
      * Routine to render a widget

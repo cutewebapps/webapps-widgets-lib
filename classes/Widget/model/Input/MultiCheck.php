@@ -30,7 +30,7 @@ class Widget_Input_MultiCheck extends Widget_Input_Text
         $strDefault = $this->get( 'value' );
         $arrValues = array();
         if ( $this->get( 'options' ))  {
-            if ( is_array( $this->get( 'options' ) ) ) $arrValues = $this->get( 'options' );
+        if ( is_array( $this->get( 'options' ) ) ) { $arrValues = $this->get( 'options' ); }
         } else if ( $this->get( 'source' ))  {
             // TODO: get data source
         }
@@ -39,7 +39,7 @@ class Widget_Input_MultiCheck extends Widget_Input_Text
         $arrHtml = array();
         foreach ( $arrValues as $key => $value ) {
             $strChecked = '';
-            if ( in_array( $key, $arrDefault ) ) $strChecked = 'checked="checked" ';
+            if ( in_array( $key, $arrDefault ) ) { $strChecked = 'checked="checked" '; }
             
             $arrHtml []=  '<div style="line-height:20px">'
                         .'<input class="multicheck" name="'.$this->get('id')

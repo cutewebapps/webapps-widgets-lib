@@ -25,8 +25,9 @@ class Widget_Input_Checkbox extends Widget_Input_Text
     public function getControlHtml()
     {
         if ( isset( $this->_arrProperties['value'] ) 
-                && $this->_arrProperties['value'] == 1 )
+                && $this->_arrProperties['value'] == 1 ) {
             $this->arrAttributes['checked'] = 'checked';
+        }
         
         $this->arrAttributes['type'] = 'checkbox';
         

@@ -81,15 +81,20 @@ class Widget_Input_Dropdown extends Widget_Input_Text
             } else if ( $this->get( 'options' ) != '' ) {
                 $arrFirstValues = explode(';', $this->get( 'options' ));
                 //Sys_Debug::alert( $arrFirstValues );
-                if (count($arrFirstValues) )
+                if (count($arrFirstValues) ) {
                     foreach ( $arrFirstValues as $strValue ) {
                         $array = explode(':', $strValue );
                         $arrValues[ trim( $array['0'] ) ] = trim( $array['1'] );
                     }
+                }
             }
         } else if ( $this->get( 'source' ))  {
             // TODO: get data source
         }
+        if ( ! $this->isBootstrap2() ) {
+            $this->arrClasses[ 'form-control' ] = 'form-control';
+        }
+        
         $strContents = $view->SelectOptions( $arrValues, $strDefault );
         return $this->getTagHtml('select', ' '. $strContents );
     }

@@ -42,7 +42,7 @@ class Widget_Control
                                     $arrDefaults[ $this->getName() ] : $this->getDefault(),
                     'options' => $this->arrParams['options'],
                 ) + $this->arrParams );
-                return $ctrl->render( $view, false );
+                return $ctrl->render( $view, false )."\n";
                 
             
             case 'checkbox':
@@ -57,7 +57,7 @@ class Widget_Control
                     'value' => isset( $arrDefaults[ $this->getName() ] ) ? 
                                     $arrDefaults[ $this->getName() ] : $this->getDefault()
                 ) + $arrP );
-                return $ctrl->render( $view, false );
+                return $ctrl->render( $view, false )."\n";
                 
             case 'multicheck':
                 // echo print_r( $arrDefaults, true  );
@@ -71,7 +71,7 @@ class Widget_Control
                     'value' => isset( $arrDefaults[ $this->getName() ] ) ? 
                                     $arrDefaults[ $this->getName() ] : $this->getDefault()
                 ) + $arrP );
-                return $ctrl->render( $view, false );
+                return $ctrl->render( $view, false )."\n";
                 
             
             case 'image':
@@ -82,7 +82,7 @@ class Widget_Control
                     'value' => isset( $arrDefaults[ $this->getName() ] ) ?
                                     $arrDefaults[ $this->getName() ] : $this->getDefault()
                 ) + $this->arrParams );
-                return  $ctrl->render( $view, false );
+                return  $ctrl->render( $view, false )."\n";
             
             case 'text':
                 //Sys_Debug::dump ( $this->arrParams );
@@ -94,7 +94,7 @@ class Widget_Control
                     'value' => isset( $arrDefaults[ $this->getName() ] ) ?
                                     $arrDefaults[ $this->getName() ] : $this->getDefault()
                 ) + $this->arrParams );
-                return  $ctrl->render( $view, false );
+                return  $ctrl->render( $view, false )."\n";
             case 'label':
                 //Sys_Debug::dump ( $this->arrParams );
                 // Sys_Debug::dump ( $arrDefaults[ $this->getName() ]);
@@ -102,7 +102,7 @@ class Widget_Control
                     'id' => 'wi-'. $this->getName(),
                     'label' => $this->getCaption()
                 ) + $this->arrParams );
-                return  $ctrl->render( $view, false );
+                return  $ctrl->render( $view, false )."\n";
             case 'textarea':
                 //Sys_Debug::dump ( $this->arrParams );
                 // Sys_Debug::dump ( $arrDefaults[ $this->getName() ]);
@@ -114,7 +114,7 @@ class Widget_Control
                     'value' => isset( $arrDefaults[ $this->getName() ] ) ?
                                     $arrDefaults[ $this->getName() ] : $this->getDefault()
                 ) + $this->arrParams );
-                return  $ctrl->render( $view, false );
+                return  $ctrl->render( $view, false )."\n";
             case 'css':   
                 $ctrl = new Widget_Input_Ace( array(
                     'highlight' => 'css',
@@ -125,7 +125,7 @@ class Widget_Control
                     'value' => isset( $arrDefaults[ $this->getName() ] ) ?
                                     $arrDefaults[ $this->getName() ] : $this->getDefault()
                 ) + $this->arrParams );
-                return  $ctrl->render( $view, false );
+                return  $ctrl->render( $view, false )."\n";
             case 'html':   
                 $ctrl = new Widget_Input_Ace( array(
                     'highlight' => 'html',
@@ -136,7 +136,7 @@ class Widget_Control
                     'value' => isset( $arrDefaults[ $this->getName() ] ) ?
                                     $arrDefaults[ $this->getName() ] : $this->getDefault()
                 ) + $this->arrParams );
-                return  $ctrl->render( $view, false );
+                return  $ctrl->render( $view, false )."\n";
                 
             case 'upload':
                 $ctrl = new Widget_Input_Uploader( array(
@@ -145,7 +145,7 @@ class Widget_Control
                     'value' => isset( $arrDefaults[ $this->getName() ] ) ?
                                     $arrDefaults[ $this->getName() ] : $this->getDefault()
                 ) + $this->arrParams );
-                return  $ctrl->render( $view, false );
+                return  $ctrl->render( $view, false )."\n";
                 //return '<!-- LOCAL UPLOADER and GALLERY REFERENCE - SHOULD GO HERE -->';
             case 'money':
                 $ctrl = new Widget_Input_Money(  array(
@@ -154,7 +154,7 @@ class Widget_Control
                     'value' => isset( $arrDefaults[ $this->getName() ] ) ?
                                     $arrDefaults[ $this->getName() ] : $this->getDefault()
                 ) + $this->arrParams );
-                return  $ctrl->render( $view, false );
+                return  $ctrl->render( $view, false )."\n";
             case 'datetime':
                 $ctrl = new Widget_Input_DateTime(  array(
                     'id' => 'wi-' . $this->getName(),
@@ -162,7 +162,7 @@ class Widget_Control
                     'value' => isset( $arrDefaults[ $this->getName() ] ) ?
                                     $arrDefaults[ $this->getName() ] : $this->getDefault()
                 ) + $this->arrParams );
-                return  $ctrl->render( $view, false );
+                return  $ctrl->render( $view, false )."\n";
             default:
                 return print_r( $this->arrParams, true );
                 

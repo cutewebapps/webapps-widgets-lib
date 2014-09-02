@@ -31,10 +31,18 @@ class Widget_Input_Date extends Widget_Input_Text
         
         $this->arrClasses['datepicker'] = 'datepicker';
         $this->arrStyles[ 'width' ] = '90px';
-        return '<div class="input-append date" >'
-            . parent::getControlHtml()
-            . '<span class="add-on"><i class="icon-calendar"></i></span>'
-            . '</div>';
+        
+        if ( ! $this->isBootstrap2() ) {
+            return '<div class="input-append date" >'
+                    . parent::getControlHtml()
+                    . '<span class="add-on"><i class="icon-calendar"></i></span>'
+                . '</div>';
+        } else {
+            return '<div class="input-group date" >'
+                    . parent::getControlHtml()
+                    . '<span class="input-group addon"><i class="fa fa-calendar"></i></span>'
+                . '</div>';
+        }
         
     }
     

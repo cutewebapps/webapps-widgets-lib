@@ -54,20 +54,22 @@ class Widget_Layout_BiColumn extends Widget_Abstract
         $strWidthL = 'width:50%';
         $strWidthR = 'width:50%';
         
-        if ( $this->get( 'column-left-width' ) )
+        if ( $this->get( 'column-left-width' ) ) {
             $strWidthL = 'width: '.$this->get( 'column-left-width' ).';';
-        if ( $this->get( 'column-right-width' ) )
+        }
+        if ( $this->get( 'column-right-width' ) ) {
             $strWidthR = 'width: '.$this->get( 'column-right-width' ).';';
+        }
         
        // if ( $bPreview ) $strEx = 'border: 4px #bbc dashed;';
         
         $strOut =
-             '<div class="form-horizontal" style="float:left;'.$strWidthL.$strCssLeft.'">'
+             '<div class="'.$this->getHorizontalForm().'" style="float:left;'.$strWidthL.$strCssLeft.'">'
                 .'<div style="'.'">'
                     . $this->getChild( 'column-left', $bPreview )
                 . '</div>'
             .'</div>'
-            .'<div class="form-horizontal" style="float:left;'.$strWidthR.$strCssRight.'">'
+            .'<div class="'.$this->getHorizontalForm().'" style="float:left;'.$strWidthR.$strCssRight.'">'
                 .'<div style="'.$strCssRight.'">'
                     . $this->getChild( 'column-right', $bPreview )
                 .'</div>'

@@ -50,28 +50,30 @@ class Widget_Type_Table extends DBx_Table
     public function addFromConfig()
     {
         $configWidgetCategories  = App_Application::getInstance()->getConfig()->widgets;
-        if  ( !is_object( $configWidgetCategories ))
+        if  ( !is_object( $configWidgetCategories )) {
             throw new App_Exception( 'Widgets are not configured' );
+        }
         
-        foreach ( $configWidgetCategories->types as $strCategory => $arrWidgets ) {
-            foreach ( $arrWidgets as $strClass ) {
-                // now we have a class that should be have a record in the widgets collection
-                $objClass = new $strClass();
-                $objWidget = $this->fetchByConfigClass( $strClass );
-                if ( !is_object( $objWidget )) {
-                    Sys_Io::out( 'creating '.$strClass );
-                    $objWidget = $this->createRow();
-                } else {
-                    Sys_Io::out( 'updating '.$strClass );
+        if ( is_object( $configWidgetCategories->types )) {
+            foreach ( $configWidgetCategories->types as $strCategory => $arrWidgets ) {
+                foreach ( $arrWidgets as $strClass ) {
+                    // now we have a class that should be have a record in the widgets collection
+                    $objClass = new $strClass();
+                    $objWidget = $this->fetchByConfigClass( $strClass );
+                    if ( !is_object( $objWidget )) {
+                        Sys_Io::out( 'creating '.$strClass );
+                        $objWidget = $this->createRow();
+                    
+                        $objWidget->wdg_class    = $strClass;
+                        $objWidget->wdg_category = $objClass->getCategory();
+                        $objWidget->wdg_owner    = $objClass->getOwner();
+                        $objWidget->wdg_context  = $objClass->getContext();
+                        $objWidget->wdg_name     = $objClass->getName();
+                        $objWidget->wdg_dt_created = date( 'Y-m-d H:i:s');
+                        $objWidget->save( false );
+                    }
+
                 }
-                $objWidget->wdg_class    = $strClass;
-                $objWidget->wdg_category = $objClass->getCategory();
-                $objWidget->wdg_owner    = $objClass->getOwner();
-                $objWidget->wdg_context  = $objClass->getContext();
-                $objWidget->wdg_name     = $objClass->getName();
-                $objWidget->wdg_dt_created = date( 'Y-m-d H:i:s');
-                $objWidget->save( false );
-                
             }
         }
     }

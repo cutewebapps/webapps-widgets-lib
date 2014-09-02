@@ -30,8 +30,14 @@ class Widget_Input_Money extends Widget_Input_Text
         $this->arrAttributes['maxlength'] = '20';
         $this->arrAttributes['type'] = 'text';
 
-        return '<div class="input-prepend"><span class="add-on">$</span>'
+        if ( $this->isBootstrap2() ) {
+            return '<div class="input-prepend"><span class="add-on">$</span>'
                 . parent::getControlHtml()
                . '</div>';
+        } else {
+            return '<div class="input-group"><div class="input-group-addon">$</span>'
+                . parent::getControlHtml()
+               . '</div>';
+        }
     }
 }

@@ -176,7 +176,8 @@ abstract class Widget_Abstract
            Widget_Instance $objWidgetInstance )
     {
         $strOut = '';
-        
+        $arrOptions  = $this->getOptions();
+        if ( !is_array( $arrOptions )) { $arrOptions = array() ; } 
         foreach( $this->getOptions() as $arrOption ) {
             $objCtrl = new Widget_Control( $arrOption );
             $strOut .= $objCtrl->render( $view, $objWidgetInstance );
@@ -199,4 +200,38 @@ abstract class Widget_Abstract
         return '<div class="element-constructor">' . $strText . '</div>';
     }
     
+    /**
+     * 
+     * @return boolean
+     */
+    public function isBootstrap2()
+    {
+        $configWidgetCategories  = App_Application::getInstance()->getConfig()->widgets;
+        $bRes = false;
+        if  ( is_object( $configWidgetCategories )) {
+            $bRes = ($configWidgetCategories->style == 'bootstrap2' );
+        }
+        return $bRes;
+    }
+    /**
+     * 
+     * @return string
+     */
+    public function getHorizontalForm()
+    {
+        return  $this->isBootstrap2() ? 'form-horizontal' : 'form-fluid';
+    }
+    /**
+     * 
+     * @return boolean
+     */
+    public function hasLocalUpload()
+    {
+        $configWidgetCategories  = App_Application::getInstance()->getConfig()->widgets;
+        $bRes = false;
+        if  ( is_object( $configWidgetCategories )) {
+            $bRes = $configWidgetCategories->local_upload;
+        }
+        return $bRes;
+    }
 }

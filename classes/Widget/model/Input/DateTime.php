@@ -51,7 +51,7 @@ class Widget_Input_DateTime extends Widget_Input_Text
                     .'<script type="text/Javascript" src="/static/bs2/js/bootstrap-datetimepicker.min.js"></script>';
         }
         
-        $strOut .= '<div class="control-group '.$this->get('wiid').'">'
+        $strOut .= '<div class="'.( $this->isBootstrap2() ? 'control-group' : 'form-group' ).' '.$this->get('wiid').'">'
                     .'<label class="control-label">'.$this->get('label').'</label>'
                     .'<div style="position:relative" class="controls '.$this->get('cssclass').'">'
                         . $this->getControlHtml()

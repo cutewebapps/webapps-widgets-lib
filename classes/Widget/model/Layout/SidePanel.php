@@ -66,16 +66,17 @@ class Widget_Layout_SidePanel extends Widget_Abstract
         
         $strOut = '';
         
-        if ( $strLeftWidth != '' )
+        if ( $strLeftWidth != '' ) {
             $strOut .=
-                 '<div class="form-horizontal" style="float:left;width:'.$strLeftWidth.'">'
+                 '<div class="'.$this->getHorizontalForm().'" style="float:left;width:'.$strLeftWidth.'">'
                     .'<div style="'.$strEx.';'.$this->get('panel-css').'min-height:20px;">'
                         . $this->getChild( 'left-panel', $bPreview )
                     . '</div>'
                 .'</div>';
+        }
         
         $strOut .= ''
-            .'<div class="form-horizontal" style="float:left;width:'.$strCentralWidth.'">'
+            .'<div class="'.$this->getHorizontalForm().'" style="float:left;width:'.$strCentralWidth.'">'
                 .'<div style="'.$strEx.'">'
                     . $this->getChild( 'above-content', $bPreview )
                 .'</div>'
