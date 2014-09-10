@@ -80,7 +80,13 @@ class Widget_Static_Image extends Widget_Abstract
         $arrOptions[] = array( 'name' => 'link', 
             'type' => 'text', 
             'value' => '', 
-            'caption' => Lang_Hash::get('Link') );
+            'caption' => Lang_Hash::get('Link URL') );
+        
+        $arrOptions[] = array( 'name' => 'target', 
+            'type' => 'text', 
+            'value' => '', 
+            'caption' => Lang_Hash::get('Link Target') );
+        
         $arrOptions[] = array( 'name' => 'image-css', 'type' => 'css', 'value' => '', 
             'caption' => Lang_Hash::get('Image CSS') );
         
@@ -107,7 +113,9 @@ class Widget_Static_Image extends Widget_Abstract
                             .' style="'.$this->get('image-css').'" '
                             .' src="'.$this->get('src').'" alt="'.$this->get('alt').'" />'.$strWrapEnd;
         } if ( $this->get( 'link' ) != '' ) {
-            $strElem = $strWrapStart . '<a href="'. $this->get( 'link' ) .'"><img id="src-'.$this->get('wiid').'" '
+            $sLinkAttr = '';
+            if ( $this->get('target') ) { $sLinkAttr = ' target="'.$this->get('target').'" '; }
+            $strElem = $strWrapStart . '<a href="'. $this->get( 'link' ) .'"'.$sLinkAttr.'><img id="src-'.$this->get('wiid').'" '
                             .' rel="'.$this->get('wiid').'" '
                             .' style="'.$this->get('image-css').'" '
                             .' src="'.$this->get('src').'" alt="'.$this->get('alt').'" /></a>'.$strWrapEnd;
