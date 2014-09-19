@@ -27,6 +27,9 @@ class Widget_Layout_Centered extends Widget_Abstract
     public function getOptions()
     {
         return array(
+            array( 'name' => 'css-class', 'type' => 'text', 'value' => '', 
+                    'caption' => 'CSS Class' )
+            ,
             array( 'name' => 'width', 'type' => 'text', 'value' => '480px', 
                     'caption' => 'Width of Centered' ),
             array( 'name' => 'css', 'type' => 'css', 'value' => '', 
@@ -55,7 +58,7 @@ class Widget_Layout_Centered extends Widget_Abstract
         if ( $this->get('outer-css','') ) {
             $strOut = '<div style="'.$this->get('outer-css').'">'.$strOut.'</div>';
         }
-        $strOut = '<div class="element-layout-wrapper" rel="' . $this->get('wiid').'">'.$strOut.'</div>';
+        $strOut = '<div class="element-layout-wrapper '.$this->get('css-class').'" rel="' . $this->get('wiid').'">'.$strOut.'</div>';
         
         return $strOut;
     }

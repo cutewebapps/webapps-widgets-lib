@@ -28,6 +28,9 @@ class Widget_Layout_BiColumn extends Widget_Abstract
   public function getOptions()
     {
         return array(
+            array( 'name' => 'css-class', 'type' => 'text', 'value' => '', 
+                    'caption' => 'CSS Class' )
+            ,
             array( 'name' => 'column-left-width', 'type' => 'text', 'value' => '50%', 
                     'caption' => 'Left Column Width' )
             ,
@@ -79,7 +82,7 @@ class Widget_Layout_BiColumn extends Widget_Abstract
         if ( $this->get('outer-css','') ) {
             $strOut = '<div style="'.$this->get('outer-css').'">'.$strOut.'</div>';
         }
-        $strOut = '<div class="element-layout-wrapper"  rel="' . $this->get('wiid').'">'.$strOut.'</div>';
+        $strOut = '<div class="element-layout-wrapper '.$this->get('css-class').'"  rel="' . $this->get('wiid').'">'.$strOut.'</div>';
         
         return $strOut;
     }    

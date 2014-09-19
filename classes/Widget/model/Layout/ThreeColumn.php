@@ -29,6 +29,9 @@ class Widget_Layout_ThreeColumn extends Widget_Abstract
   public function getOptions()
     {
         return array(
+            array( 'name' => 'css-class', 'type' => 'text', 'value' => '', 
+                    'caption' => 'CSS Class' )
+            ,
             array( 'name' => 'column-left-width', 'type' => 'text', 'value' => '33%', 
                     'caption' => 'Left Column Width' )
             ,
@@ -66,12 +69,15 @@ class Widget_Layout_ThreeColumn extends Widget_Abstract
         $strWidthC = 'width:50%';
         $strWidthR = 'width:50%';
         
-        if ( $this->get( 'column-left-width' ) )
+        if ( $this->get( 'column-left-width' ) ) {
             $strWidthL = 'width: '.$this->get( 'column-left-width' ).';';
-        if ( $this->get( 'column-central-width' ) )
+        }
+        if ( $this->get( 'column-central-width' ) ) {
             $strWidthC = 'width: '.$this->get( 'column-central-width' ).';';
-        if ( $this->get( 'column-right-width' ) )
+        }
+        if ( $this->get( 'column-right-width' ) ) {
             $strWidthR = 'width: '.$this->get( 'column-right-width' ).';';
+        }
         
         $strOut =
              '<div class="'.$this->getHorizontalForm().'" style="float:left;'.$strWidthL.$strCssL.'">'
@@ -94,7 +100,7 @@ class Widget_Layout_ThreeColumn extends Widget_Abstract
         if ( $this->get('outer-css','') ) {
             $strOut = '<div style="'.$this->get('outer-css').'">'.$strOut.'</div>';
         }
-        $strOut = '<div class="element-layout-wrapper">'.$strOut.'</div>';
+        $strOut = '<div class="element-layout-wrapper '.$this->get('css-class').'">'.$strOut.'</div>';
         
         return $strOut;
     }    
