@@ -47,7 +47,7 @@ class Widget_Layout_Centered extends Widget_Abstract
         // margin:0px auto;'.$strEx.'width:'.$this->get('width', '480px').'"
         
         $strOut = '<style>'
-                .' #'.$this->_strId.' { margin:0px auto; '.$strEx.' width: '.$this->get('width', '480px').'} '
+                . ( $this->get('width' ) ? ' #'.$this->_strId.' { margin:0px auto; '.$strEx.' width: '.$this->get('width', '480px').'} ' : '' )
                 . ' @media(max-width:640px) { #'.$this->_strId.' { width: 100%; display: block; } }'
                 .'</style>'
               . '<div id="'.$this->_strId.'" class="'.$this->getHorizontalForm().'" style="'.$this->get('css').'">'
